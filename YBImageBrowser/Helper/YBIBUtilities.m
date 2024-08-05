@@ -91,6 +91,9 @@ CGFloat YBIBSafeAreaBottomHeight(void) {
 }
 
 UIImage *YBIBSnapshotView(UIView *view) {
+    if (view.bounds.size.width == 0) {
+        return [UIImage new];
+    }
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, [UIScreen mainScreen].scale);
     [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
