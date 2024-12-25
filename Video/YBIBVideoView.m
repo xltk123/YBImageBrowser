@@ -197,11 +197,12 @@
 - (void)addObserverForPlayer {
     [_playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     __weak typeof(self) wSelf = self;
-    [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 20) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         __strong typeof(wSelf) self = wSelf;
         if (!self) return;
-        float currentTime = time.value / time.timescale;
-        [self.actionBar setCurrentValue:currentTime];
+        
+        float currentTime = CMTimeGetSeconds(time); // 当前播放时间
+        [self.actionBar setCurrentValue:currentTime]; // 更新 UI 或播放进度
     }];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_playerItem];
 }
